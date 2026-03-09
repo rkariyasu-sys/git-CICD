@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test step
-        run: python sample.py
+        run: python CICD.py
 
   deploy:
     runs-on: ubuntu-latest
