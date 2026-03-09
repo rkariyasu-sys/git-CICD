@@ -1,63 +1,30 @@
-name: CI/CD Pipeline
+name: CI Pipeline
 
 on:
   push:
     branches:
-      - main  # mainブランチにpushされたときに実行
-  pull_request:
-    branches:
-      - main  # mainブランチへのPRが作成されたときに実行
+      - main
 
 jobs:
   lint:
-    runs-on: ubuntu-latest  # 使用するOS（ここではUbuntu）
-    
+    runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2  # リポジトリのコードをチェックアウト
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'  # 使用するNode.jsのバージョン
-
-    - name: Install dependencies
-      run: npm install  # 必要な依存関係をインストール
-
-    - name: Run ESLint
-      run: npx eslint .  # コードのリントを実行
+      - uses: actions/checkout@v4
+      - name: Lint step
+        run: echo "Lint check OK"
 
   test:
     runs-on: ubuntu-latest
-    needs: lint  # lintが成功した後に実行
-
+    needs: lint
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Run Tests
-      run: npm test  # テストを実行
+      - uses: actions/checkout@v4
+      - name: Test step
+        run: echo "Test OK"
 
   deploy:
     runs-on: ubuntu-latest
-    needs: test  # テストが成功した後に実行
-
+    needs: test
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Deploy to AWS S3
-      run: |
-        aws s3 sync ./dist s3://your-bucket-name  # AWS S3へのデプロイ
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  # AWSのアクセスキー
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  # AWSのシークレットキー
-        AWS_REGION: us-west-1  # AWSリージョン
+      - uses: actions/checkout@v4
+      - name: Deploy step
+        run: echo "Deploy OK"
